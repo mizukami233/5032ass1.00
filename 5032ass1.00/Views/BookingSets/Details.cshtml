@@ -1,0 +1,67 @@
+﻿@model _5032ass1._00.Models.BookingSet
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BookingSet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassSet.Class_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassSet.Class_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Booking_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Booking_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Booking_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Booking_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Booking_Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Booking_Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Booking_Rate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Booking_Rate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

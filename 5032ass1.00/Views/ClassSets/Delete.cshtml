@@ -1,0 +1,73 @@
+﻿@model _5032ass1._00.Models.ClassSet
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ClassSet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Class_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Class_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Class_Des)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Class_Des)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Class_Rate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Class_Rate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Class_Lng)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Class_Lng)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Class_Lat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Class_Lat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Class_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Class_Date)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
