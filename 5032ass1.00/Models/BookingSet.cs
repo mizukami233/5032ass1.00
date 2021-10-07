@@ -24,7 +24,7 @@ namespace _5032ass1._00.Models
 
         [Required]
         public string User_Id { get; set; }
-
+  
         public string Booking_Rate { get; set; }
 
         public int Class_Id { get; set; }

@@ -4,9 +4,12 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using _5032ass1._00.Models;
+using _5032ass1._00.Utils;
 using Microsoft.AspNet.Identity;
 
 namespace _5032ass1._00.Controllers
@@ -18,8 +21,17 @@ namespace _5032ass1._00.Controllers
         // GET: BookingSets
         public ActionResult Index()
         {
-            var bookingSets = db.BookingSets.Include(b => b.ClassSet);
-            return View(bookingSets.ToList());
+            if (User.IsInRole("Admin"))
+            {
+                var bookings = db.BookingSets.Include(b => b.ClassSet);
+                return View(bookings.ToList());
+            }
+            else
+            {
+                var id = User.Identity.GetUserId();
+                var bookings = db.BookingSets.Where(b => b.User_Id == id);
+                return View(bookings.ToList());
+            }
         }
 
         // GET: BookingSets/Details/5
@@ -59,7 +71,14 @@ namespace _5032ass1._00.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Booking_Name,Booking_Date,Booking_Email,Booking_Rate,Class_Id")] BookingSet bookingSet)
         {
+            DateTimeOffset dateTime = DateTimeOffset.Now;
+            if (DateTimeOffset.Compare(bookingSet.Booking_Date, dateTime) < 0) 
+            {
+                return Content("<script>alert('booking date error');window.location.href = 'Index'</script>");
+            }
 
+
+            EmailAsync(bookingSet.Booking_Email);
             bookingSet.User_Id = User.Identity.GetUserId();
             ModelState.Clear();
             TryValidateModel(bookingSet);
@@ -67,7 +86,7 @@ namespace _5032ass1._00.Controllers
             {
                 db.BookingSets.Add(bookingSet);
                 db.SaveChanges();
-                return Content("<script>alert('good');window.location.href = 'Index'</script>");
+                return Content("<script>alert('you add class successfully');window.location.href = 'Index'</script>");
                 //return RedirectToAction("Index");
             }
 
@@ -141,6 +160,34 @@ namespace _5032ass1._00.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public Task<ActionResult> EmailAsync(String email) 
+        {
+            MailAddress to = new MailAddress(email);
+            MailAddress from = new MailAddress("b29e29fcc2 - afe465@inbox.mailtrap.io");
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = "you class add successfully";
+            message.Body = "Please login your account to see more class details";
+
+
+                SmtpClient client = new SmtpClient("smtp.mailtrap.io", 2525)
+                {
+                    Credentials = new NetworkCredential("d93b02cc045bd7", "6d257a76decd00"),
+                    EnableSsl = true
+                };
+                // code in brackets above needed if authentication required
+
+                try
+                {
+                    client.Send(message);
+                }
+                catch (SmtpException ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                return null;
+
         }
     }
 }

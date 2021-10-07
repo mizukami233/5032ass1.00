@@ -8,10 +8,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>ClassSet</h4>
         <hr />
@@ -78,4 +78,14 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.datetimepicker.js"></script>
+    <link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            $('#Class_Date').datetimepicker({
+                format: "Y/m/d H:i"
+            })
+
+        })
+    </script>
 }

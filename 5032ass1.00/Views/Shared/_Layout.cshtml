@@ -28,11 +28,12 @@
                     <li>@Html.ActionLink("主页", "Index", "Home")</li>
                     <li>@Html.ActionLink("关于", "About", "Home")</li>
                     <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Send Email", "Send_Email", "Home")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("Booking", "Index", "BookingSets")</li>
-                        
-                     }
+
+                    }
                     <li>@Html.ActionLink("Class", "Index", "ClassSets")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -47,7 +48,6 @@
         </footer>
     </div>
 
-    
     @RenderSection("scripts", required: false)
 </body>
 </html>
