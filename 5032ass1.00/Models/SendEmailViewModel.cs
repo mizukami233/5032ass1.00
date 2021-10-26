@@ -10,7 +10,6 @@ namespace _5032ass1._00.Models
         public class SendEmailViewModel
         {
             [Display(Name = "Email address")]
-            [Required(ErrorMessage = "Please enter an email address.")]
             [EmailAddress(ErrorMessage = "Invalid Email Address")]
             public string ToEmail { get; set; }
 

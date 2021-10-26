@@ -58,11 +58,11 @@ namespace _5032ass1._00
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "876766278042-rse858rno4g6ccrugpqvijuuvn4bmsa6.apps.googleusercontent.com",
+                ClientSecret = "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"
+            });
         }
     }
 }

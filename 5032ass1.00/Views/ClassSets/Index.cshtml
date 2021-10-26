@@ -5,6 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@* This is for the mapbox map. *@
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+@*This is used for the Geocoding Mapbox API*@
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+
+<div id="map" style="height: 600px;margin-top:100px"> </div>
+
 <h2>Index</h2>
 @if (User.IsInRole("Admin"))
 {<p>
@@ -40,8 +50,8 @@
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
+            <tr class="coordinates">
+                <td class="name">
                     @Html.DisplayFor(modelItem => item.Class_Name)
                 </td>
                 <td>
@@ -50,10 +60,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Class_Rate)
                 </td>
-                <td>
+                <td class="latitude">
                     @Html.DisplayFor(modelItem => item.Class_Lng)
                 </td>
-                <td>
+                <td class="longitude">
                     @Html.DisplayFor(modelItem => item.Class_Lat)
                 </td>
                 <td>
@@ -62,12 +72,12 @@
                 <td>
                     @if (User.IsInRole("Admin"))
                     {
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        @Html.ActionLink("Edit |", "Edit", new { id = item.Id }) 
+                        @Html.ActionLink(" Delete ", "Delete", new { id = item.Id })
 
                     }
 
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    @Html.ActionLink("| Details", "Details", new { id = item.Id })
 
                 </td>
             </tr>
@@ -78,10 +88,11 @@
     {
     @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
     @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
+    <script src="~/Scripts/map.js"></script>
     <script>
-    $(document).ready(function () {
-        $('.table').DataTable();
-    });
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
     </script>
 
 }

@@ -13,9 +13,9 @@ $("#calendar").fullCalendar({
     events: events,
     dayClick: function (date, allDay, jsEvent, view) {
         var d = new Date(date);
-        var m = moment(d).format("YYYY-MM-DD");
-        m = encodeURIComponent(m);
-        var uri = "/BookingSets/Create?date=" + m;
+        var mon = moment(d).format("YYYY-MM-DD");
+        mon = encodeURIComponent(mon);
+        var uri = "/BookingSets/Create?date=" + mon;
         $(location).attr('href', uri);
     }
 });

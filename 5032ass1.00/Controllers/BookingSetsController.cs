@@ -69,6 +69,7 @@ namespace _5032ass1._00.Controllers
         // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Create([Bind(Include = "Id,Booking_Name,Booking_Date,Booking_Email,Booking_Rate,Class_Id")] BookingSet bookingSet)
         {
             DateTimeOffset dateTime = DateTimeOffset.Now;
@@ -161,7 +162,38 @@ namespace _5032ass1._00.Controllers
             }
             base.Dispose(disposing);
         }
+        // GET: BookingSets/Edit/5
+        public ActionResult Rating(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BookingSet bookingSet = db.BookingSets.Find(id);
+            if (bookingSet == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Class_Id = new SelectList(db.ClassSets, "Id", "Class_Name", bookingSet.Class_Id);
+            return View(bookingSet);
+        }
 
+        // POST: BookingSets/Edit/5
+        // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
+        // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Rating([Bind(Include = "Id,Booking_Name,Booking_Date,Booking_Email,User_Id,Booking_Rate,Class_Id")] BookingSet bookingSet)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(bookingSet).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.Class_Id = new SelectList(db.ClassSets, "Id", "Class_Name", bookingSet.Class_Id);
+            return View(bookingSet);
+        }
         public Task<ActionResult> EmailAsync(String email) 
         {
             MailAddress to = new MailAddress(email);

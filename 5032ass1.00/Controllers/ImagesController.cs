@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -10,131 +11,117 @@ using _5032ass1._00.Models;
 
 namespace _5032ass1._00.Controllers
 {
-    public class ClassSetsController : Controller
+    public class ImagesController : Controller
     {
-        private Model1 db = new Model1();
+        private Model2 db = new Model2();
 
-        // GET: ClassSets
+        // GET: Images
         public ActionResult Index()
         {
-            var csList = db.ClassSets.ToList();
-            foreach( var cs in csList)
-            {
-                double totalRating = 0;
-                var bkList = db.BookingSets.Where(b => b.Class_Id == cs.Id); //every class coresponding booking.
-
-                
-                  foreach (var bk in bkList)
-                    {
-                    if (bk.Booking_Rate == null)
-                    {
-                        totalRating += 0;
-                    }
-                    else
-                    {
-                        totalRating += Double.Parse(bk.Booking_Rate);
-                    }
-                        
-                    }
-                   cs.Class_Rate = (totalRating / bkList.Count()).ToString();
-                
-                
-            }
-            return View(csList);
+            return View(db.Images.ToList());
         }
 
-        // GET: ClassSets/Details/5
+        // GET: Images/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ClassSet classSet = db.ClassSets.Find(id);
-            if (classSet == null)
+            Image image = db.Images.Find(id);
+            if (image == null)
             {
                 return HttpNotFound();
             }
-            return View(classSet);
+            return View(image);
         }
 
-        // GET: ClassSets/Create
+        // GET: Images/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ClassSets/Create
+        // POST: Images/Create
         // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
         // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ValidateInput(false)]
-        public ActionResult Create([Bind(Include = "Id,Class_Name,Class_Des,Class_Rate,Class_Lng,Class_Lat,Class_Date")] ClassSet classSet)
+        public ActionResult Create([Bind(Include = "Id,Path,Name")] Image image)
         {
             if (ModelState.IsValid)
             {
-                db.ClassSets.Add(classSet);
+                db.Images.Add(image);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(classSet);
+            return View(image);
         }
 
-        // GET: ClassSets/Edit/5
+        // GET: Images/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ClassSet classSet = db.ClassSets.Find(id);
-            if (classSet == null)
+            Image image = db.Images.Find(id);
+            if (image == null)
             {
                 return HttpNotFound();
             }
-            return View(classSet);
+            return View(image);
         }
 
-        // POST: ClassSets/Edit/5
+        // POST: Images/Edit/5
         // 为了防止“过多发布”攻击，请启用要绑定到的特定属性；有关
         // 更多详细信息，请参阅 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Class_Name,Class_Des,Class_Rate,Class_Lng,Class_Lat,Class_Date")] ClassSet classSet)
+        public ActionResult Create([Bind(Include = "Id,Name")] Image image, HttpPostedFileBase postedFile)
         {
+            ModelState.Clear();
+            var myUniqueFileName = string.Format(@"{0}", Guid.NewGuid());
+            image.Path = myUniqueFileName;
+            TryValidateModel(image);
             if (ModelState.IsValid)
             {
-                db.Entry(classSet).State = EntityState.Modified;
+                string serverPath = Server.MapPath("~/Uploads/");
+                string fileExtension = Path.GetExtension(postedFile.FileName);
+                string filePath = image.Path + fileExtension;
+                image.Path = filePath;
+                postedFile.SaveAs(serverPath + image.Path);
+                db.Images.Add(image);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(classSet);
+            return View(image);
         }
 
-        // GET: ClassSets/Delete/5
+
+        // GET: Images/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ClassSet classSet = db.ClassSets.Find(id);
-            if (classSet == null)
+            Image image = db.Images.Find(id);
+            if (image == null)
             {
                 return HttpNotFound();
             }
-            return View(classSet);
+            return View(image);
         }
 
-        // POST: ClassSets/Delete/5
+        // POST: Images/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ClassSet classSet = db.ClassSets.Find(id);
-            db.ClassSets.Remove(classSet);
+            Image image = db.Images.Find(id);
+            db.Images.Remove(image);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

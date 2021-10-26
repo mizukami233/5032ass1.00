@@ -13,6 +13,7 @@ namespace _5032ass1._00.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+        
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
